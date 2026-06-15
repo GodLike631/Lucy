@@ -24,7 +24,7 @@ jobs:
         
         # 使用 curl 下载别人仓库的文件
         # 【注意】请把下面 URL 换成你要抓取的 GitHub Raw 真实链接
-        curl -L "https://raw.githubusercontent.com/目标用户名/目标仓库名/分支名/对方的文件名.json" -o datas/local_config.json
+        curl -L "https://raw.githubusercontent.com/FGBLH/GHK/refs/heads/main/海豚.json" -o datas/local_config.json
 
     # 3. 检查文件是否有变动，如果有，自动提交并推送到你的仓库
     - name: Commit and Push changes
