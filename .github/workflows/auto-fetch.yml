@@ -1,4 +1,4 @@
-name: 自动多源抓取与去重
+name: 完整同步海豚源
 
 on:
   schedule:
@@ -18,17 +18,14 @@ jobs:
       with:
         python-version: '3.10'
 
-    # 【核心改动】同时下载两个源的文件
-    - name: Fetch target files
+    # 下载海豚源的原始文件，直接保存到最终输出路径
+    - name: Fetch target file
       run: |
         mkdir -p datas
-        # 下载第一个源 (CNB 仓库)
-        curl -L "https://cnb.cool/fish2018/xs/-/git/raw/main/api.json" -o datas/source1.json
-        # 下载第二个源 (GitHub 仓库)
-        curl -L "https://raw.githubusercontent.com/FGBLH/GHK/refs/heads/main/海豚.json" -o datas/source2.json
+        curl -L "https://raw.githubusercontent.com/FGBLH/GHK/refs/heads/main/海豚.json" -o datas/local_config.json
 
-    # 运行升级后的 Python 脚本进行融合去重
-    - name: Modify and Merge JSON
+    # 运行 Python 脚本进行格式规范检查（确保中文和缩进排版漂亮）
+    - name: Format JSON
       run: |
         python modify_config.py
 
@@ -41,6 +38,6 @@ jobs:
         if [ -z "$(git status --porcelain)" ]; then
           echo "文件没有变化，无需更新。"
         else
-          git commit -m "自动多源合并去重: $(date +'%Y-%m-%d %H:%M:%S')"
+          git commit -m "原封不动完整同步: $(date +'%Y-%m-%d %H:%M:%S')"
           git push
         fi
